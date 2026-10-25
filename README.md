@@ -53,13 +53,26 @@ npm start                      # http://localhost:3000
 
 ## Enabling swaps
 
-Real-money execution is **off by default** because it was not tested end to end with real funds while building this. What *was* verified:
+Real-money execution is **off by default**, so a fresh install can never trade by accident.
+
+**Live test (Oct 25, 2026):** on Windows with Chrome and Phantom, a small swap of 0.02 SOL → USDC and a sale of that USDC back to SOL both completed and showed as confirmed. Live DEX Screener data, Jupiter quotes and RPC balance reads also worked. That is one small test with one wallet, not a guarantee. Keep amounts small, especially with low-liquidity tokens.
+
+Automated checks also cover:
 
 - Unit tests of request validation, response parsing, error-code mapping and fee/cost math, using the request/response schema from Jupiter's official Swap V2 OpenAPI spec.
 - Transaction-inspection tests on real transactions built and signed with `@solana/kit`.
 - A browser test with a mock Wallet Standard wallet and mocked API responses, covering: a rejected signature submits nothing; an approved signature submits exactly the wallet-signed bytes once; success is shown only after the signature is confirmed on-chain.
 
-Calls to the live Jupiter, DEX Screener and Solana RPC APIs could not be made from the build environment (its network policy blocked them), so run these checks yourself before trusting the app with money:
+To turn swaps on for one session (Windows Command Prompt), stop the app with Ctrl + C, then run:
+
+```
+set "NEXT_PUBLIC_ENABLE_SWAP_EXECUTION=true"
+npm run dev
+```
+
+To keep them on permanently, put `NEXT_PUBLIC_ENABLE_SWAP_EXECUTION=true` in `.env.local` and restart (rebuild for production).
+
+If you deploy somewhere new or change wallets, repeat a small test first:
 
 1. Set `NEXT_PUBLIC_ENABLE_SWAP_EXECUTION=true` in `.env.local` and restart.
 2. Use a **fresh wallet funded with a few dollars of SOL**.
