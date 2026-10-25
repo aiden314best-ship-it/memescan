@@ -2,6 +2,7 @@
 import { useConnect, useDisconnect, type UiWallet, type UiWalletAccount } from "@wallet-standard/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useWallet } from "./WalletProvider";
 import { IconClose, IconWallet } from "@/components/icons";
 import { shortAddress } from "@/lib/solana/address";
@@ -53,7 +54,9 @@ export function WalletModal({ open, onClose }: { open: boolean; onClose: () => v
   }, [open, onClose]);
 
   if (!open) return null;
-  return (
+  // Portal to <body>: the header's backdrop blur would otherwise become the containing
+  // block for this fixed overlay and squash it into the header.
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" onClick={onClose}>
       <div
         role="dialog"
@@ -98,7 +101,8 @@ export function WalletModal({ open, onClose }: { open: boolean; onClose: () => v
           key. If anything does, it is a scam.
         </p>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
