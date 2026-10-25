@@ -218,7 +218,9 @@ async function partB(browser) {
   // Token page
   await page.goto(`${BASE}/token/${MINT}`, { waitUntil: "networkidle" });
   check(await page.getByText(MINT, { exact: true }).isVisible(), "token page shows mint address");
-  check(await page.getByText(/Low liquidity, concentrated ownership and volatile prices/).isVisible(), "token page shows loss warning");
+  check(await page.getByText("High-risk asset: you can lose everything.").isVisible(), "token page shows short loss warning");
+  await page.getByText("High-risk asset: you can lose everything.").click();
+  check(await page.getByText(/Low liquidity, concentrated ownership and volatile prices/).isVisible(), "warning expands to full text");
   check(await page.getByRole("link", { name: /Solscan/ }).first().isVisible(), "token page links to Solscan");
   await shot(page, "mock-token");
   if (SHOTS) {

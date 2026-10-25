@@ -205,12 +205,22 @@ export function Stat({ label, value, sub, valueClass = "" }: { label: string; va
   );
 }
 
-export function RiskDisclaimer({ compact = false }: { compact?: boolean }) {
+/** One-line general warning that expands to the full text. Shown on every token, not a per-token rating. */
+export function RiskDisclaimer() {
   return (
-    <Notice tone="warn" title={compact ? undefined : "High risk"}>
-      Memecoins are extremely risky. Low liquidity, concentrated ownership and volatile prices can cause substantial or
-      total losses. Anyone can create a token with any name or logo, and scams are common. Nothing on this site is
-      financial advice or a recommendation.
-    </Notice>
+    <details className="group rounded-lg border border-warn/40 bg-warn/10 px-3 py-2 text-sm">
+      <summary className="flex cursor-pointer list-none items-center gap-2 text-warn [&::-webkit-details-marker]:hidden">
+        <IconAlert width={16} height={16} className="shrink-0" />
+        <span className="font-medium">High-risk asset: you can lose everything.</span>
+        <span className="ml-auto text-xs text-muted group-open:hidden">Why?</span>
+        <span className="ml-auto hidden text-xs text-muted group-open:inline">Hide</span>
+      </summary>
+      <p className="mt-2 text-muted">
+        Memecoins are extremely risky. Low liquidity, concentrated ownership and volatile prices can cause substantial or
+        total losses. Anyone can create a token with any name or logo, and scams are common. This is a general warning
+        shown for every token. Use the Risk checker for signals about a specific token. Nothing on this site is financial
+        advice or a recommendation.
+      </p>
+    </details>
   );
 }

@@ -106,7 +106,7 @@ export function DashboardView() {
         }
       />
       <div className="mt-4">
-        <RiskDisclaimer compact />
+        <RiskDisclaimer />
       </div>
     </>
   );
