@@ -138,10 +138,15 @@ function QuoteReview({ quote, token, now }: { quote: Quote; token: TokenInfo; no
         v={
           cost === null
             ? "Not reported (your wallet shows the final fee)"
-            : `≈ ${formatAtomic(BigInt(cost), 9)} SOL${o.rentFeeLamports ? ` (incl. ${formatAtomic(BigInt(o.rentFeeLamports), 9)} SOL rent)` : ""}`
+            : `≈ ${formatAtomic(BigInt(cost), 9)} SOL${
+                // Mention rent only when the taker is the one paying it.
+                o.rentFeeLamports && (!o.rentFeePayer || o.rentFeePayer === o.taker)
+                  ? ` (incl. ${formatAtomic(BigInt(o.rentFeeLamports), 9)} SOL rent)`
+                  : ""
+              }`
         }
       />
-      {o.gasless && <Row k="Gasless" v="Yes, network fees are paid by another party" />}
+      {o.gasless && <Row k="Gasless" v="Yes: network fees are paid by another party, and recouped through the Jupiter fee below" />}
       <Row
         k="Jupiter fee"
         v={o.feeBps != null ? `${(o.feeBps / 100).toFixed(2)}% (charged by Jupiter, included in the quote)` : "Not reported"}
