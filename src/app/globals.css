@@ -1,26 +1,87 @@
 @import "tailwindcss";
 
+/* Theme is toggled by a class on <html>; dark is the default. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --panel-2: #f0f2f5;
+  --line: #e2e5ea;
+  --fg: #0e1116;
+  --muted: #5b6573;
+  --up: #0f9d58;
+  --down: #d93025;
+  --warn: #b26a00;
+  --accent: #6d4aff;
+  --accent-fg: #ffffff;
+  color-scheme: light;
+}
+
+:root.dark {
+  --bg: #08090b;
+  --panel: #101216;
+  --panel-2: #161a20;
+  --line: #22272f;
+  --fg: #e8ebef;
+  --muted: #8a94a3;
+  --up: #22c55e;
+  --down: #f04444;
+  --warn: #f5a524;
+  --accent: #8b6cff;
+  --accent-fg: #ffffff;
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-up: var(--up);
+  --color-down: var(--down);
+  --color-warn: var(--warn);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility card {
+  @apply rounded-xl border border-line bg-panel;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-accent text-accent-fg hover:brightness-110;
+}
+@utility btn-ghost {
+  @apply btn border border-line bg-panel-2 text-fg hover:border-muted;
+}
+@utility input {
+  @apply w-full rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none;
+}
+@utility label {
+  @apply mb-1 block text-xs font-medium text-muted;
+}
+@utility skeleton {
+  @apply animate-pulse rounded bg-panel-2;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
 }
